@@ -1,0 +1,7 @@
+ps.1.0
+;trasforma le coordinate uvw in colori (r,g,b)
+texcoord t0
+mov r0, t0
+
+
+

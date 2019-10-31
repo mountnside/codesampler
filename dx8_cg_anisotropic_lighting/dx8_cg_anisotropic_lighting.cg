@@ -1,0 +1,51 @@
+struct vertex
+{
+    float3 position : POSITION;
+    float3 normal   : NORMAL;
+};
+
+struct fragment
+{
+    float4 position  : POSITION;
+    float4 texcoord0 : TEXCOORD0;
+};
+
+fragment main( vertex IN,
+               uniform float4x4 worldViewProj,
+               uniform float3x3 worldViewInv,
+               uniform float3x4 world,
+               uniform float3 lightVector,
+               uniform float3 eyePosition )
+{
+    fragment OUT;
+
+    float3 worldNormal = normalize( mul(worldViewInv, IN.normal) );
+
+    // Build up a float4 from a float3
+    float4 tempPos = float4( IN.position.x,
+		                     IN.position.y,
+					         IN.position.z,
+					         1.0f );
+
+    // Compute world-space position
+    float3 worldSpacePos = mul( world, tempPos );
+    
+    // Create a normalized vector pointing from vertex to eye
+    float3 vertToEye = normalize( eyePosition - worldSpacePos );
+
+    // h = normalize(l + e)
+    float3 halfAngle = normalize( vertToEye + lightVector );
+
+    //
+    // This is where we use our texture as a look up table for anisotropic 
+    // lighting.
+    // 
+
+    OUT.texcoord0.x = max( dot(lightVector, worldNormal), 0.0);
+    OUT.texcoord0.y = max( dot(halfAngle, worldNormal), 0.0);
+    
+    // Transform vertex into homogeneous clip-space
+    OUT.position = mul( worldViewProj, tempPos );
+
+    return OUT;
+}

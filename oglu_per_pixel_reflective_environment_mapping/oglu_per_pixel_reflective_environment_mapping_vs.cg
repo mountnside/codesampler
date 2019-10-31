@@ -1,0 +1,41 @@
+
+void main(	in	float4		position	: POSITION,
+			in	float2		texCoord	: TEXCOORD0,
+			in	float3		N			: NORMAL,		// obj space
+				   
+		uniform float4x4	ModelViewProj,
+		uniform float4x4	ModelView,
+		uniform float4x4	ModelViewIT,
+		uniform float3		eyePosition,
+					
+			out	float4		oPosition	: POSITION,
+			out float2		oTexCoord	: TEXCOORD0,
+			out	float3		oWsN		: TEXCOORD1,
+			out	float3		oWsI		: TEXCOORD2
+		) 
+{
+	// As usual, transform vertex position to clip space.
+	oPosition = mul( ModelViewProj, position );
+
+	// Pass thru tex coordinates.
+	oTexCoord = texCoord;
+
+	// Transform position into world (view) space.
+	float4 wsPosition = mul( ModelView, position );
+
+	// Our model transform is not projective and the homogenous component of 
+	// the vertex position w is 1, so the next step is not necessary, but 
+	// mathematically more correct.
+	wsPosition /= wsPosition.w;
+
+	// We have an affine model transformation and an uniform scaling 
+	// (actually there is no scaling at all).
+	// So, transforming N into world space can also be done by multiplying
+	// with the modelview matrix, since the modelview matrix is orthogonal 
+	// and following equation applies:
+	// MV = ((MV)^-1)^T
+	oWsN = mul( (float3x3) ModelViewIT, N );
+
+	// Calculate incident ray I within world (view) space.
+	oWsI = wsPosition.xyz - eyePosition;
+}

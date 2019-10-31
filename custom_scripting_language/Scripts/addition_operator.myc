@@ -1,0 +1,84 @@
+
+varA = 200;
+varB = varA + "1";
+print varB;
+
+varA = 200;
+varB = varA + 1;
+print varB;
+
+varA = "20";
+varB = varA + 1;
+print varB;
+
+varA = "20";
+varB = varA + "1";
+print varB;
+
+//-------------------------------------------------------------------------------------
+
+var1 = 100;
+var2 = "1";
+var3 = var1 + var2;
+print var3;
+
+var1 = 100;
+var2 = 1;
+var3 = var1 + var2;
+print var3;
+
+var1 = "10";
+var2 = 1;
+var3 = var1 + var2;
+print var3;
+
+var1 = "10";
+var2 = "1";
+var3 = var1 + var2;
+print var3;
+
+//-------------------------------------------------------------------------------------
+
+num = 500 + 1 + 4;
+print num;
+
+num = 500 + 1 + "4";
+print num;
+
+num = 500 + "1" + "4";
+print num;
+
+num = "5" + "0" + 5;
+print num;
+
+num = "5" + 0 + 5;
+print num;
+
+num = 500 + 5 + "string";
+print num;
+
+num = 500 + "string" + 5;
+print num;
+
+num = "string" + 50 + 5;
+print num;
+
+//-------------------------------------------------------------------------------------
+
+int_a = 10000 + 2000 + 300 + 40 + 5;
+print int_a;
+
+int_a = "1" + "2" + "3" + "4" + "5";
+print int_a;
+
+//-------------------------------------------------------------------------------------
+
+str_a = "88";
+str_b = "8";
+str_c  = str_a + str_b;
+print str_c;
+
+int_a = 880;
+int_b = 8;
+int_c = int_a + int_b;
+print int_c;

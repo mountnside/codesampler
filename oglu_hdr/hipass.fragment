@@ -1,0 +1,13 @@
+uniform sampler2D source;
+
+void main()
+{
+   vec4 color = texture2D(source, gl_TexCoord[0].st);
+
+   color.x = color.x > 0.99 ? 1.0 : 0.0;
+   color.y = color.y > 0.99 ? 1.0 : 0.0;
+   color.z = color.z > 0.99 ? 1.0 : 0.0;
+	
+   gl_FragColor = color;
+}
+

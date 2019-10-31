@@ -1,0 +1,62 @@
+str_a = "string1";
+str_b = "string2";
+
+if( str_a == str_b )
+{
+	print "error";
+}
+else
+{
+	print "success";
+}
+
+if( str_a == str_b )
+	print "error";
+else
+{
+	print "success";
+}
+
+if( str_a == str_b )
+	print "error";
+else
+	print "success";
+
+if( str_a == str_b )
+	print "error";
+else
+	print "success";
+	print "outside";
+
+//-------------------------------------------------------------------------------------
+
+str_a = "string1";
+str_b = "string2";
+str_c = "string3";
+str_d = "string1";
+
+if( str_a == str_b )
+{
+	print "error";
+}
+else if( str_a == str_c )
+{
+	print "error";
+}
+else
+{
+	print "success";
+}
+
+if( str_a == str_b )
+{
+	print "error";
+}
+else if( str_a == str_d )
+{
+	print "success";
+}
+else
+{
+	print "error";
+}

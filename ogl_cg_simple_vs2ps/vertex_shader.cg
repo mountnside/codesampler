@@ -1,0 +1,27 @@
+struct vertex
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+	float2 texcoord0 : TEXCOORD0;
+};
+
+struct fragment
+{
+	float4 position  : POSITION;
+	float4 color0    : COLOR0;
+	float2 texcoord0 : TEXCOORD0;
+};
+
+// This binding semantic requires CG_PROFILE_ARBVP1 or higher.
+uniform float4x4 modelViewProj : state.matrix.mvp;
+
+fragment main( vertex IN )
+{
+	fragment OUT;
+
+	OUT.position  = mul( modelViewProj, IN.position );
+	OUT.color0    = IN.color0;
+	OUT.texcoord0 = IN.texcoord0;
+
+	return OUT;
+}

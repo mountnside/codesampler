@@ -1,0 +1,108 @@
+What does this code block do?
+
+{
+    u_int *source, *end;
+    u_int addr_printf, addr_scePrintf;
+    int    counter = 0;
+	    
+    addr_printf     = ((u_int) printf & 0xFFFFFF) / 4;
+    addr_scePrintf  = ((u_int) scePrintf & 0xFFFFFF) / 4;
+	    
+    source  = (u_int *) sceGsSyncPath;
+    end     = source + 195;
+	    
+    while (source < end)
+    {
+        if ((*source & 0xFF000000) == 0x0C000000)
+        {
+            // Function call...
+            if ((*source & 0xFFFFFF) == addr_printf)
+            {	            
+                *source = 0x0C000000 | addr_scePrintf;
+                counter++;
+            }
+        }
+        
+        source++;
+    }
+}
+
+---------------------------------------------------------------------------------------
+
+What is wrong with this function?
+
+COLOR *VidGetRenderColor( void ) 
+{
+   COLOR *color;
+
+   color->r = 255;
+   color->g = 255;
+   color->b = 255;
+   color->a = 255;
+
+   return color;
+}
+
+---------------------------------------------------------------------------------------
+
+What is returned below from "unsigned long color = VidSetAlpha( 255 );"
+
+unsigned long VidSetAlpha( char Alpha )
+{
+   unsigned long color;
+
+   color = 0x80808000; // grey ( red | green | blue | alpha )
+   color |= Alpha;
+
+   return color;
+}
+
+---------------------------------------------------------------------------------------
+
+Write pseudocode for a video game main loop.
+
+---------------------------------------------------------------------------------------
+
+Given a camera position, an "up" vector, and a look-at position, build a camera 
+look-at matrix.
+
+---------------------------------------------------------------------------------------
+
+Write a function to print an unsigned 32 bit integer in binary.
+
+---------------------------------------------------------------------------------------
+
+What is wrong with this function?
+
+#ifdef NO_ASSERT
+   #define ASSERT(x) /* nothing */
+#else
+   #define ASSERT(x) { if ( !(x) ) { printf( "Assertion failed\n" ); exit 1; }}
+#endif
+
+unsigned char *AllocateBytes( int Count )
+{
+   unsigned char *data;
+
+   ASSERT( data = ( unsigned char * ) malloc( Count ) );
+
+   return data;
+}
+
+---------------------------------------------------------------------------------------
+
+Write a function Traverse() to traverse a binary tree and call function Foo() 
+on each node. Provide code for all 3 traversal methods.
+
+typdef void ( *FOO ) ( NODE * );
+void Traverse( NODE *Node, FOO Foo );
+
+---------------------------------------------------------------------------------------
+
+Do you program using idioms?  Elaborate.
+
+---------------------------------------------------------------------------------------
+
+The extern keyword should only be used in one place. Where is that place? Why?
+
+---------------------------------------------------------------------------------------

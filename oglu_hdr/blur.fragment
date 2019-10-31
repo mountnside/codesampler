@@ -1,0 +1,16 @@
+uniform sampler2D source;
+
+uniform vec3 coefficients;
+uniform vec2 offset;
+
+void main()
+{
+   vec4 c;
+   vec2 tc = gl_TexCoord[0].st;
+
+   c  = coefficients.x * texture2D(source, tc - offset);
+   c += coefficients.y * texture2D(source, tc);
+   c += coefficients.z * texture2D(source, tc + offset);
+
+   gl_FragColor = c;
+}

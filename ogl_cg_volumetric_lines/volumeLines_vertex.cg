@@ -1,0 +1,97 @@
+struct vertex
+{
+	float4 startpos : POSITION;
+	float4 endpos   : TEXCOORD2;
+	float4 color    : DIFFUSE;
+	float4 tex0     : TEXCOORD0;
+	float2 tex1     : TEXCOORD1;
+};
+
+struct fragment
+{
+	float4 hpos : POSITION;
+	float4 col0 : COLOR0;
+	float4 col1 : COLOR1;
+	float4 tex0 : TEXCOORD0;
+	float4 tex1 : TEXCOORD1;
+};
+
+fragment main( vertex IN,
+               uniform float4x4 ModelViewProj,
+               uniform float4x4 ModelView )
+ {
+    fragment OUT;
+
+    OUT.col0 = IN.color;
+
+    //
+    // Transform 2 positions by the modelview
+    //
+
+    float4 posstart = mul(ModelView, IN.startpos);
+    float4 posend   = mul(ModelView, IN.endpos);
+    
+    // Unit vector between EYE and CENTER of the line (param4.x = 1/2)
+    float3  middlepoint = normalize((posstart.xyz + posend.xyz)/2.0);
+    
+    // Unit vector of the line direction
+    float3 lineoffset = posend.xyz - posstart.xyz; 
+    float3 linedir = normalize(lineoffset); 
+    float sqlinelength = dot(lineoffset, lineoffset);
+    
+    // Dot-product in order to compute the texture coef
+    float texcoef = abs( dot(linedir, middlepoint) );
+    
+    // Change texture coef depending on line length: y=(Sz/(l^2))(x-1)+1
+    texcoef = max( ((texcoef - 1)*(sqlinelength / IN.tex1.y)) + 1, 0 );
+
+    //
+    // model-view + projection on start and end points
+    //
+
+    posstart = mul( ModelViewProj, IN.startpos );
+    posend   = mul( ModelViewProj, IN.endpos );
+    
+    // Perspective transform to get projected point
+    float2 startpos2d = posstart.xy / posstart.w;
+    float2 endpos2d   = posend.xy / posend.w;
+    
+    // Vector between these 2 points
+    float2 linedir2d = normalize(startpos2d - endpos2d);
+    
+    // Move corners with radius0 and radius1
+    posstart.xy = ((texcoef * IN.tex0.z) * linedir2d.xy) + posstart.xy; // horizontal
+
+    linedir2d = IN.tex1.x * linedir2d;
+
+    posstart.x = posstart.x + linedir2d.y; // vertical x
+    posstart.y = posstart.y - linedir2d.x; // vertical y
+    OUT.hpos = posstart;
+
+    //
+    // Compute tex-coords depending on texcoef
+    //
+
+    float blend;
+    float4 tex;
+    tex.zw = float2(0,1);
+    tex.y = min(15.0/16.0, texcoef); // We don't want more than 15/16
+    tex.x = modf(tex.y * 4.0, tex.y); 
+    blend = modf(tex.x * 4.0, tex.x); // Integer part of tx * 4 and get the blend factor
+    tex.xy = (tex.xy / 4.0) + (IN.tex0).xy; 
+    OUT.tex0 = tex;
+
+	//
+	// Now get the second texture coord : increment
+	//
+
+	tex.y = min(texcoef + (1.0/16.0), 15.0/16.0);
+	tex.x = modf(tex.y * 4.0, tex.y);
+	tex.x = floor(tex.x * 4.0);
+	tex.xy = (tex.xy / 4) + (IN.tex0).xy; 
+	OUT.tex1 = tex;
+
+	OUT.col1 = blend.xxxx;
+
+	return OUT;
+ }

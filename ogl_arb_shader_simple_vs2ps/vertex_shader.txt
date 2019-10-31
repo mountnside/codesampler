@@ -1,0 +1,24 @@
+!!ARBvp1.0
+
+# Constant Parameters
+PARAM mvp[4] = { state.matrix.mvp }; # Model-view-projection matrix
+
+# Per-vertex inputs
+ATTRIB inPosition = vertex.position;
+ATTRIB inColor    = vertex.color;
+ATTRIB inTexCoord = vertex.texcoord;
+
+# Per-vertex outputs
+OUTPUT outPosition = result.position;
+OUTPUT outColor    = result.color;
+OUTPUT outTexCoord = result.texcoord;
+
+DP4 outPosition.x, mvp[0], inPosition;   # Transform the x component of the per-vertex position into clip-space
+DP4 outPosition.y, mvp[1], inPosition;   # Transform the y component of the per-vertex position into clip-space
+DP4 outPosition.z, mvp[2], inPosition;   # Transform the z component of the per-vertex position into clip-space
+DP4 outPosition.w, mvp[3], inPosition;   # Transform the w component of the per-vertex position into clip-space
+
+MOV outColor, inColor;       # Pass the color through unmodified
+MOV outTexCoord, inTexCoord; # Pass the texcoords through unmodified
+
+END

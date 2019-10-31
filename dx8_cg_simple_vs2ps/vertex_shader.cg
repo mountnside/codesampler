@@ -1,0 +1,36 @@
+struct vertex
+{
+    float3 position : POSITION;
+    float4 color0   : COLOR0;
+};
+
+struct fragment
+{
+	float4 position : POSITION;
+	float4 color0   : COLOR0;
+};
+
+//-----------------------------------------------------------------------------
+// IN            - incoming per-vertex data to be processed
+// worldViewProj - combined model-view-projection matrix
+// constColor    - constant color (defined by the application)
+//-----------------------------------------------------------------------------
+fragment main( vertex IN,
+	          uniform float4x4 worldViewProj,
+	          uniform float4 constColor )
+
+{
+	fragment OUT;
+
+	float4 v = float4( IN.position.x,
+		               IN.position.y,
+					   IN.position.z,
+					   1.0f );
+
+	OUT.position = mul( worldViewProj, v );
+
+	OUT.color0 = IN.color0; // Use the original per-vertex color specified
+    //OUT.color0 = constColor; // Uncomment this to use the color stored in the constColor argument
+
+	return OUT;
+}

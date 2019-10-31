@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DirectXLesson", "DirectXLesson.vbproj", "{8A30596F-7BA6-428D-A6D5-C80BEA54C72E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{8A30596F-7BA6-428D-A6D5-C80BEA54C72E}.Debug.ActiveCfg = Debug|.NET
+		{8A30596F-7BA6-428D-A6D5-C80BEA54C72E}.Debug.Build.0 = Debug|.NET
+		{8A30596F-7BA6-428D-A6D5-C80BEA54C72E}.Release.ActiveCfg = Release|.NET
+		{8A30596F-7BA6-428D-A6D5-C80BEA54C72E}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

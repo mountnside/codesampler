@@ -1,0 +1,72 @@
+
+void main(	in	float4		position			: POSITION,
+			in	float2		texCoord			: TEXCOORD0,
+			in	float4		TangentToCubeSpace0 : TEXCOORD1,
+			in	float4		TangentToCubeSpace1 : TEXCOORD2,
+			in	float4		TangentToCubeSpace2 : TEXCOORD3,
+			in	float3		wsNormal			: TEXCOORD4,
+
+		uniform	sampler2D	normalMap,
+		uniform	sampler2D	baseMap,
+		uniform	samplerCUBE	environmentMap,
+		uniform	float		bumpy,
+		uniform float		modulate,
+		uniform	float		reflectivity,
+		uniform	float4x4	ModelViewI,
+
+			out	float4		color				: COLOR
+		  ) 
+{
+	// Fetch tangent space bump normal and decompress.
+	float4 tsNormal = 2.0 * ( tex2D( normalMap, texCoord ) - 0.5 );
+
+	// Fetch decal color
+	float4 decalColor = tex2D( baseMap, texCoord );
+
+	// Transform bump normal into cube (view) space.
+	float3 N;
+	// Flag bumpy is used to disable bump mapping if bump scale is 0.
+	if( bumpy > 0.0f ) {
+		N.x = dot( TangentToCubeSpace0.xyz, tsNormal.xyz );
+		N.y = dot( TangentToCubeSpace1.xyz, tsNormal.xyz );
+		N.z = dot( TangentToCubeSpace2.xyz, tsNormal.xyz );
+	}
+	// If bump scale is 0, use view (world) space normal.
+	else
+		N = wsNormal;
+
+	// Fetch view vector
+	float3 EyeVector;
+	EyeVector.x = TangentToCubeSpace0.w;
+	EyeVector.y = TangentToCubeSpace1.w;
+	EyeVector.z = TangentToCubeSpace2.w;
+
+	// Calculate reflection vector within world (view) space.
+	float3 R;
+	R = reflect( EyeVector, N );
+
+	// Our reflection vector is incorrect so far. It does not point to
+	// the matching rotated cubemap texture because we are not using
+	// a dynamic cubemap.
+	// In our sample, the reflection vector is calculated within world
+	// (view) space. Our skybox is rotated, and accordingly the
+	// object space coordinates are changing. If we want to fetch the
+	// correct cubemap color, we have to put R into the matching
+	// object space. This gives us the correct rotation of R in object
+	// space coordinates.
+	// Since, in our case, the inverse of the modelview matrix 
+	// transforms into object space, we apply it to R, which is then 
+	// used to fetch the cubemap.
+	float3 objSpaceR = mul( (float3x3)ModelViewI, R );
+	R = objSpaceR;
+
+	if( modulate != 1.0f )
+		// Interpolate between base and cubemap color.
+		// This lets you control the reflectivity.
+		color = lerp( decalColor, texCUBE( environmentMap, R ), reflectivity );
+	else
+		// Modulates the base color with the cubemap color without 
+		// control over reflectivity. This results in the same effect 
+		// shown in the Cg user's manual.
+		color = decalColor * texCUBE( environmentMap, R );
+}

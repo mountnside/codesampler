@@ -1,0 +1,39 @@
+struct fragment
+{
+	float4 position  : POSITION;
+	float4 color0    : COLOR0;
+	float2 texcoord0 : TEXCOORD0;
+};
+
+struct pixel
+{
+	float4 color : COLOR;
+};
+
+//-----------------------------------------------------------------------------
+// IN           - Incoming fragment to be processed
+// testTexture0 - The first of three textures to blend together
+// testTexture1 - The second of three textures to blend together
+// testTexture2 - The third of three textures to blend together
+//-----------------------------------------------------------------------------
+pixel main( fragment IN,
+//// Do this if you're going to use OpenGL's method of passing the multi-texture ID.
+//            uniform sampler2D testTexture0 : TEXUNIT0,
+//            uniform sampler2D testTexture1 : TEXUNIT1,
+//            uniform sampler2D testTexture2 : TEXUNIT2 )
+
+// Do this if you're going to use Cg's method of passing the multi-texture ID.
+            uniform sampler2D testTexture0,
+            uniform sampler2D testTexture1,
+            uniform sampler2D testTexture2 )
+{
+	pixel OUT;
+
+    float4 texelColor0 = tex2D( testTexture0, IN.texcoord0 );
+    float4 texelColor1 = tex2D( testTexture1, IN.texcoord0 );
+    float4 texelColor2 = tex2D( testTexture2, IN.texcoord0 );
+
+    OUT.color = (texelColor0 * IN.color0.x) + (texelColor1 * IN.color0.y) + (texelColor2 * IN.color0.z);
+
+	return OUT;
+}

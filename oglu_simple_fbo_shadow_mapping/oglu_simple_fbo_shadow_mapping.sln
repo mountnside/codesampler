@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "oglu_simple_fbo_shadow_mapping", "ogl_frame_buffer_object.vcproj", "{8EDE5C77-2892-41B1-976B-CD0F2FD95E27}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{8EDE5C77-2892-41B1-976B-CD0F2FD95E27}.Debug.ActiveCfg = Debug|Win32
+		{8EDE5C77-2892-41B1-976B-CD0F2FD95E27}.Debug.Build.0 = Debug|Win32
+		{8EDE5C77-2892-41B1-976B-CD0F2FD95E27}.Release.ActiveCfg = Release|Win32
+		{8EDE5C77-2892-41B1-976B-CD0F2FD95E27}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

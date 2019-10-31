@@ -1,0 +1,54 @@
+struct appin
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+    float4 texcoord0 : TEXCOORD0;
+};
+
+struct vertout
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+    float4 texcoord0 : TEXCOORD0;
+};
+
+//-----------------------------------------------------------------------------
+// IN             - incoming per-vertex data to be processed
+// modelViewProj  - combined world-view-projection matrix
+// size           - size factor for billboard creation
+// preRotatedQuad - a pre-rotated quad for billboarding purposes
+//
+// Note: Only the x and y components of texcoord0 are valid, the z and w 
+//       components contain hidden information. The z component identifies
+//       which vertex of the billboard's quad is currently being processed and 
+//       the w component carries a scaling factor for sizing the billboard.
+//-----------------------------------------------------------------------------
+
+vertout main( appin IN,
+              const uniform float4x4 modelViewProj, 
+              const uniform float4   size,
+              const uniform float4   preRotatedQuad[4] )
+
+{
+    vertout OUT;
+
+    // Build-up a float4 position from a float3 position and then transform it.
+    float4 vCenter = float4( IN.position.x, IN.position.y, IN.position.z, 1.0f );
+
+    OUT.position = mul( modelViewProj, vCenter + preRotatedQuad[IN.texcoord0.z] * IN.texcoord0.w );
+
+    IN.texcoord0.z = 0.0f; // Remove the hidden information from the z component
+    IN.texcoord0.w = 1.0f; // Remove the hidden information from the w component
+
+    OUT.color0    = IN.color0;
+    OUT.texcoord0 = IN.texcoord0;
+
+    return OUT;
+}
+
+
+
+
+
+
+

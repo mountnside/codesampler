@@ -1,0 +1,25 @@
+!!ARBvp1.0
+# Vertex Program for viewing Normals
+
+# Constant Parameters
+PARAM mvp[4]     = { state.matrix.mvp }; # modelview projection matrix
+PARAM constColor = program.env[0];       # Constant color (defined by the application)
+
+# Per-vertex inputs
+ATTRIB inPosition = vertex.position;
+ATTRIB inNormal   = vertex.normal;
+# ATTRIB inColor    = vertex.color;
+
+# Per-vertex outputs
+OUTPUT outPosition = result.position;
+OUTPUT outColor    = result.color;
+
+DP4 outPosition.x, mvp[0], inPosition;   # Transform the x component of the per-vertex position into clip-space
+DP4 outPosition.y, mvp[1], inPosition;   # Transform the y component of the per-vertex position into clip-space
+DP4 outPosition.z, mvp[2], inPosition;   # Transform the z component of the per-vertex position into clip-space
+DP4 outPosition.w, mvp[3], inPosition;   # Transform the w component of the per-vertex position into clip-space
+
+MOV outColor, inNormal;                  # Use the per-vertex normal specified as color
+# MOV outColor, constColor;              # Uncomment this to use the constant color stored at "program.env[0]"
+
+END

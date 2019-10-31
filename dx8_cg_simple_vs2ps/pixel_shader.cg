@@ -1,0 +1,33 @@
+// Note how the fragment struct was simply copied from our vertex shader code.
+// This is necessary if we want to use a vertex and pixel shader together.
+
+struct fragment
+{
+	float4 position : POSITION;
+	float4 color0   : COLOR0;
+};
+
+struct pixel
+{
+	float4 color : COLOR;
+};
+
+//-----------------------------------------------------------------------------
+// IN - incoming fragment to be processed
+//-----------------------------------------------------------------------------
+
+
+pixel main( fragment IN )
+{
+	pixel OUT;
+
+	OUT.color = IN.color0; // Simply pass the color on and output it.
+
+    // If you uncomment the next line, the color passed to us by our
+    // vertex shader will be ignored completely and all output to the 
+    // frame buffer will be red regardless.
+
+	//OUT.color = float4( 1.0f, 0.0f, 0.0f, 1.0f );
+
+	return OUT;
+}

@@ -1,0 +1,73 @@
+
+void main(	float4	position	: POSITION,		// obj space
+			float2	texCoord	: TEXCOORD0,
+			float3	T			: TEXCOORD1,	// obj space
+			float3	B			: TEXCOORD2,	// obj space
+			float3	N			: TEXCOORD3,	// obj space
+				   
+	uniform float4x4 ModelViewProj,
+	uniform float4x4 ModelView,
+	uniform float4x4 ModelViewIT,
+	uniform float4   eyePosition,				// obj space
+	uniform float	 bumpScale,
+					
+	out		float4	oPosition				: POSITION,
+	out		float2	oTexCoord				: TEXCOORD0,
+	out		float4	oTangentToCubeSpace0	: TEXCOORD1,
+	out		float4	oTangentToCubeSpace1	: TEXCOORD2,
+	out		float4	oTangentToCubeSpace2	: TEXCOORD3,
+	out		float3	oWsNormal				: TEXCOORD4
+) 
+{
+	// Pass thru for fetching the bump normal.
+	oTexCoord = texCoord;
+
+	// Transform surface normal to view (world) space.
+	// In our sample, we do not have a non-uniform scaling (to be
+	// precise there is no scaling at all) but a rotation-only 
+	// matrix, so the upper-left 3x3 of the inverse transpose of
+	// the modelview matrix is identical to the modelview matrix.
+	oWsNormal = mul( ( float3x3 )ModelViewIT, N );
+
+	// Build TBN matrix which transforms from object space to tangent
+	// space. First rows are the tangent and binormal scaled by the
+	// bump scale.
+	float3x3 objToTangentSpace = float3x3(	T * bumpScale, 
+											B * bumpScale, 
+											N );
+
+	// Compute the 3x3 transform from tangent to cube space:
+	// Be aware of the fact that, in our case, and also in most
+	// other cases, cube space corresponds to view (world) space.
+	// So,
+	// oTangentToCubeSpace = obj2cube * tang2obj
+	//					   = obj2cube * transpose(objToTangentSpace)
+	// since the inverse of a rotation is its transpose.
+	// So a row of oTangentToCubeSpace is the transform by
+	// objToTangentSpace of the corresponding row of objToCubeSpace.
+	// And objToCubeSpace in our case is nothing else than the upper-
+	// left 3x3 of the inverse transpose of the modelview matrix.
+	// As mentioned above, this matches with the modelview matrix.
+
+	// Transpose TBN to get inverse rotation to object space.
+	float3x3 TBNInv = transpose( objToTangentSpace );
+
+	// Then, concatenate it with the upper-left 3x3 of the inverse 
+	// transpose of the modelview matrix (which is equivalent to the
+	// modelview matrix since we have a rotation-only matrix).
+	float3x3 tmp = mul( ( float3x3 )ModelViewIT, TBNInv );
+	oTangentToCubeSpace0.xyz = tmp[0];
+	oTangentToCubeSpace1.xyz = tmp[1];
+	oTangentToCubeSpace2.xyz = tmp[2];
+
+	// Transform eye into view space.
+	float3 eyeVector = mul( ModelView, position ) - eyePosition;
+
+	// Put eye vector into homogeneous coordinates.
+	oTangentToCubeSpace0.w = eyeVector.x;
+	oTangentToCubeSpace1.w = eyeVector.y;
+	oTangentToCubeSpace2.w = eyeVector.z;
+
+	// As usual, transform position to clip space.
+	oPosition = mul( ModelViewProj, position );
+}

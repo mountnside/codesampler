@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?fileVersion 3.1.0?>
+
+<ManagedProjectBuildInfo>
+<project id="sdl_mouse.cdt.managedbuild.target.gnu.exe.1572043589" name="Executable (Gnu)" projectType="cdt.managedbuild.target.gnu.exe">
+<configuration id="cdt.managedbuild.config.gnu.exe.release.1191733391" name="Release" description="" parent="cdt.managedbuild.config.gnu.exe.release" artifactName="sdl_mouse" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser" cleanCommand="rm -rf">
+<toolChain superClass="cdt.managedbuild.toolchain.gnu.exe.release" id="cdt.managedbuild.toolchain.gnu.exe.release.57265267" name="GCC Tool Chain">
+<tool superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release" id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1620879690" name="GCC C++ Compiler" outputs="o" command="g++" outputFlag="-o" outputPrefix="">
+<option superClass="gnu.cpp.compiler.option.include.paths" id="gnu.cpp.compiler.option.include.paths.1107615213" valueType="includePath">
+<listOptionValue value="/usr/include/SDL" builtIn="false"/>
+</option>
+</tool>
+<tool superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.release" id="cdt.managedbuild.tool.gnu.c.compiler.exe.release.1571932982" name="GCC C Compiler" outputs="o" command="gcc" outputFlag="-o" outputPrefix=""/>
+<tool superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release" id="cdt.managedbuild.tool.gnu.c.linker.exe.release.1854715650" name="GCC C Linker"/>
+<tool superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.release" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.106566943" name="GCC C++ Linker" outputs="" command="g++" outputFlag="-o" outputPrefix="">
+<option superClass="gnu.cpp.link.option.paths" id="gnu.cpp.link.option.paths.1694345982" valueType="stringList">
+<listOptionValue value="&quot;&quot;$(shell sdl-config --libs)&quot;&quot;" builtIn="false"/>
+<listOptionValue value="&quot;&quot;$(shell sdl-config --cflags)&quot;&quot;" builtIn="false"/>
+</option>
+<option superClass="gnu.cpp.link.option.libs" id="gnu.cpp.link.option.libs.202546448" valueType="libs">
+<listOptionValue value="SDL" builtIn="false"/>
+</option>
+</tool>
+<tool superClass="cdt.managedbuild.tool.gnu.assembler.exe.release" id="cdt.managedbuild.tool.gnu.assembler.exe.release.431167097" name="GCC Assembler"/>
+</toolChain>
+</configuration>
+<configuration id="cdt.managedbuild.config.gnu.exe.debug.636297730" name="Debug" description="" parent="cdt.managedbuild.config.gnu.exe.debug" artifactName="sdl_mouse" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser" cleanCommand="rm -rf">
+<toolChain superClass="cdt.managedbuild.toolchain.gnu.exe.debug" id="cdt.managedbuild.toolchain.gnu.exe.debug.2050902398" name="GCC Tool Chain">
+<tool superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug" id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.532408256" name="GCC C++ Compiler" outputs="o" command="g++" outputFlag="-o" outputPrefix="">
+<option superClass="gnu.cpp.compiler.option.include.paths" id="gnu.cpp.compiler.option.include.paths.674728956" valueType="includePath">
+<listOptionValue value="/usr/include/SDL" builtIn="false"/>
+</option>
+</tool>
+<tool superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug" id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.868999249" name="GCC C Compiler" outputs="o" command="gcc" outputFlag="-o" outputPrefix=""/>
+<tool superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug" id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1227214302" name="GCC C Linker"/>
+<tool superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.988852230" name="GCC C++ Linker" outputs="" command="g++" outputFlag="-o" outputPrefix="">
+<option superClass="gnu.cpp.link.option.paths" id="gnu.cpp.link.option.paths.556898436" valueType="stringList">
+<listOptionValue value="&quot;&quot;$(shell sdl-config --libs)&quot;&quot;" builtIn="false"/>
+<listOptionValue value="&quot;&quot;$(shell sdl-config --cflags)&quot;&quot;" builtIn="false"/>
+</option>
+<option superClass="gnu.cpp.link.option.libs" id="gnu.cpp.link.option.libs.822490222" valueType="libs">
+<listOptionValue value="SDL" builtIn="false"/>
+</option>
+</tool>
+<tool superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug" id="cdt.managedbuild.tool.gnu.assembler.exe.debug.1631658846" name="GCC Assembler"/>
+</toolChain>
+</configuration>
+</project>
+</ManagedProjectBuildInfo>

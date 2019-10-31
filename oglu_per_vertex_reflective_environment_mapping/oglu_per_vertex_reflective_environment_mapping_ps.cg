@@ -1,0 +1,14 @@
+
+void main(	in		float4		position		: POSITION,
+			in		float2		texCoord		: TEXCOORD0,
+            in		float3		R				: TEXCOORD1,
+
+            out		float4		oColor			: COLOR,
+			
+            uniform	samplerCUBE environmentMap
+		) 
+{
+	// Here, fetching the environment color via Cg intrinsic 
+	// texCUBE is the only thing to do.
+	oColor = texCUBE( environmentMap, R );
+}

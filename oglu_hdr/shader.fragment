@@ -1,0 +1,8 @@
+varying float specular, diffuse;
+
+uniform vec3 model_color;
+
+void main()
+{
+   gl_FragColor = vec4(vec3(1.0) * specular + model_color * diffuse, 1.0);
+}

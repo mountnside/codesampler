@@ -1,0 +1,26 @@
+
+struct fragment
+{
+	float4 hpos : POSITION;
+	float4 col0 : COLOR0;
+	float4 col1 : COLOR1;
+	float4 tex0 : TEXCOORD0;
+	float4 tex1 : TEXCOORD1;
+};
+
+struct pixel
+{
+	float4 color : COLOR;
+};
+
+pixel main( fragment IN, uniform sampler2D volumeLineTexure )
+{
+	pixel OUT;
+
+    float4 texelColor0 = tex2D( volumeLineTexure, IN.tex0.xy );
+    float4 texelColor1 = tex2D( volumeLineTexure, IN.tex1.xy );
+
+    OUT.color = lerp( texelColor0, texelColor1, IN.col1 );
+
+	return OUT;
+}

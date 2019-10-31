@@ -1,0 +1,4 @@
+;colori della texture inversi
+ps.1.0
+tex t0
+mul r0,v0,1-t0

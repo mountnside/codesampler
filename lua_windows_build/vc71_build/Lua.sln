@@ -1,0 +1,50 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lua", "Lua.vcproj", "{E4E5F5E6-F527-4C01-8A0B-EDB01D0BDAC2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A430972F-B8F5-42C1-A336-A2474E39A0E3} = {A430972F-B8F5-42C1-A336-A2474E39A0E3}
+		{B15F86D4-0F5C-46A2-A240-CE093BC5284D} = {B15F86D4-0F5C-46A2-A240-CE093BC5284D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Luac", "Luac.vcproj", "{9EA600C6-EFEC-4789-B982-9C95215F99F6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A430972F-B8F5-42C1-A336-A2474E39A0E3} = {A430972F-B8F5-42C1-A336-A2474E39A0E3}
+		{B15F86D4-0F5C-46A2-A240-CE093BC5284D} = {B15F86D4-0F5C-46A2-A240-CE093BC5284D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lualib", "Lualib.vcproj", "{B15F86D4-0F5C-46A2-A240-CE093BC5284D}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lualiblib", "Lualiblib.vcproj", "{A430972F-B8F5-42C1-A336-A2474E39A0E3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B15F86D4-0F5C-46A2-A240-CE093BC5284D} = {B15F86D4-0F5C-46A2-A240-CE093BC5284D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{E4E5F5E6-F527-4C01-8A0B-EDB01D0BDAC2}.Debug.ActiveCfg = Debug|Win32
+		{E4E5F5E6-F527-4C01-8A0B-EDB01D0BDAC2}.Debug.Build.0 = Debug|Win32
+		{E4E5F5E6-F527-4C01-8A0B-EDB01D0BDAC2}.Release.ActiveCfg = Release|Win32
+		{E4E5F5E6-F527-4C01-8A0B-EDB01D0BDAC2}.Release.Build.0 = Release|Win32
+		{9EA600C6-EFEC-4789-B982-9C95215F99F6}.Debug.ActiveCfg = Debug|Win32
+		{9EA600C6-EFEC-4789-B982-9C95215F99F6}.Debug.Build.0 = Debug|Win32
+		{9EA600C6-EFEC-4789-B982-9C95215F99F6}.Release.ActiveCfg = Release|Win32
+		{9EA600C6-EFEC-4789-B982-9C95215F99F6}.Release.Build.0 = Release|Win32
+		{B15F86D4-0F5C-46A2-A240-CE093BC5284D}.Debug.ActiveCfg = Debug|Win32
+		{B15F86D4-0F5C-46A2-A240-CE093BC5284D}.Debug.Build.0 = Debug|Win32
+		{B15F86D4-0F5C-46A2-A240-CE093BC5284D}.Release.ActiveCfg = Release|Win32
+		{B15F86D4-0F5C-46A2-A240-CE093BC5284D}.Release.Build.0 = Release|Win32
+		{A430972F-B8F5-42C1-A336-A2474E39A0E3}.Debug.ActiveCfg = Debug|Win32
+		{A430972F-B8F5-42C1-A336-A2474E39A0E3}.Debug.Build.0 = Debug|Win32
+		{A430972F-B8F5-42C1-A336-A2474E39A0E3}.Release.ActiveCfg = Release|Win32
+		{A430972F-B8F5-42C1-A336-A2474E39A0E3}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

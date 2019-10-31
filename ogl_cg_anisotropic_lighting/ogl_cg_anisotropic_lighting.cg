@@ -1,0 +1,103 @@
+struct vertex
+{
+	float4 position  : POSITION;
+    float3 normal    : NORMAL;
+    float4 texcoord0 : TEXCOORD0;
+};
+
+struct fragment
+{
+    float4 position  : POSITION;
+    float4 texcoord0 : TEXCOORD0;
+};
+
+//-----------------------------------------------------------------------------
+// Transforms a vector by the rotational portion of a matrix instead of 
+// transforming it by a full matrix, which can result in some amount 
+// translation. In other words, we want to re-orient a vector by some matrix, 
+// but not translate it any. If we transformed our vector by a full matrix
+// our vector would be treated as a point - not a directional vector.
+//-----------------------------------------------------------------------------
+float3 transformVec( const float4x4 matrix, const float3 vec )
+{
+    return( float3( dot(vec, matrix._11_12_13),
+                    dot(vec, matrix._21_22_23),
+                    dot(vec, matrix._31_32_33) ) );
+}
+
+//-----------------------------------------------------------------------------
+// IN            - incoming per-vertex data to be processed
+// modelViewProj - combined model-view-projection matrix
+// modelViewInv  - inverese, transposed model-view matrix
+// model         - model matrix
+// lightVector   - direction vector for light
+// eyePosition   - position of the eye
+//-----------------------------------------------------------------------------
+fragment main( vertex IN,
+               uniform float4x4 modelViewProj,
+               uniform float4x4 modelViewInv,
+               uniform float4x4 model,
+               uniform float4   lightVector,
+               uniform float4   eyePosition )
+{
+    fragment OUT;
+
+    // Transform the normal vector using only the rotational portion of the 
+    // full inverse model-view matrix.
+
+    float4 worldNormal;
+
+    //
+    // BUG NOTE:
+    //
+    // Use the inverse, transposed model-view matrix passed via 
+    // cgGLSetStateMatrixParameter.
+    //
+    //worldNormal.xyz = transformVec( modelViewInv, IN.normal );
+
+    //
+    // BUG NOTE:
+    //
+    // Use the inverse, transposed model-view matrix passed via arbvp1's 
+    // "glstate" structure.
+    //
+    worldNormal.xyz = transformVec( glstate.matrix.invtrans.modelview[0], IN.normal );
+
+    worldNormal = normalize( worldNormal );
+
+    // Compute world-space position
+    float4 worldSpacePos = mul( model, IN.position );
+    
+    // Create a normalized vector pointing from vertex to eye
+    float4 vertToEye = normalize( eyePosition - worldSpacePos );
+
+    // h = normalize(l + e)
+    float4 halfAngle = normalize( vertToEye + lightVector );
+
+    //
+    // This is where we use our texture as a look up table for anisotropic 
+    // lighting.
+    //
+
+    OUT.texcoord0 = IN.texcoord0;
+    OUT.texcoord0.x = max( dot(lightVector, worldNormal), 0.0);
+    OUT.texcoord0.y = max( dot(halfAngle, worldNormal), 0.5);
+
+    // Transform vertex into homogeneous clip-space...
+
+    //
+    // BUG NOTE:
+    //
+    // Use the model-view matrix passed via cgGLSetStateMatrixParameter.
+    //
+    //OUT.position = mul( modelViewProj, IN.position ); 
+
+    //
+    // BUG NOTE:
+    //
+    // Use the model-view matrix passed via arbvp1's "glstate" structure.
+    //
+    OUT.position = mul( glstate.matrix.mvp, IN.position );
+
+    return OUT;
+}

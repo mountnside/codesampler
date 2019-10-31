@@ -1,0 +1,26 @@
+int_a = 5;
+int_b = 5;
+
+if( int_a == int_b )
+{
+	print "success";
+}
+else
+{
+	print "error";
+}
+
+//-------------------------------------------------------------------------------------
+
+int_a = 5;
+int_b = 6;
+
+if( int_a == int_b )
+{
+	print "error";
+}
+else
+{
+	print "success";
+}
+

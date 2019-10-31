@@ -1,0 +1,134 @@
+struct vertex
+{
+	float4 position      : POSITION;
+	float4 color0        : COLOR0;
+	float4 normal        : NORMAL;
+    float4 weights       : TEXCOORD2; // Take over TEXCOORD2 and use it for weight values
+    float4 matrixIndices : TEXCOORD3; // Take over TEXCOORD3 and use it for index values
+    float4 numBones      : SPECULAR;  // Take over SPECULAR and use it for the number of bones
+};
+
+struct fragment
+{
+	float4 position : POSITION;
+	float4 color0   : COLOR0;
+};
+
+//-----------------------------------------------------------------------------
+// IN                  - incoming per-vertex data to be processed
+// modelViewProjection - combined model-view-projection matrix
+// modelViewInverse    - inverse model-view matrix for lighting calculations
+// boneMatrices        - array of bone matrices
+// eyePosition         - eye position of viewer
+// lightVector         - light's directional vector
+//-----------------------------------------------------------------------------
+fragment main( vertex IN,
+	           uniform float4x4 modelViewProjection,
+			   uniform float4x4 modelViewInverse,
+	           uniform float3x4 boneMatrices[2],
+			   uniform float4   eyePosition,
+			   uniform float4   lightVector )
+
+{
+	fragment OUT;
+
+//*
+    // If you have access to a shader profile that supports for() loops, you can 
+    // can create a for loop which can sum together the total transformation 
+    // offset of all the bone matrices that effect the current vertex.
+
+	float4 index  = IN.matrixIndices;
+	float4 weight = IN.weights;
+
+	float4 position = float4( 0.0, 0.0, 0.0, 0.0 );
+	float3 finalNormal = float3( 0.0, 0.0, 0.0 );
+
+	for( float i = 0.0; i < 2.0f; i += 1.0 )        // CG_PROFILE_ARBVP1 supports for loops as long as they know exaclty how how many iteratiosn will be done.
+    //for( float i = 0.0; i < IN.numBones.x; i += 1.0 ) // CG_PROFILE_VP30 supports true for loops
+    {
+        // Apply influence of bone i
+        position = position + weight.x * float4(mul(boneMatrices[index.x], IN.position).xyz, 1.0);
+
+        // Transform normal by bone i
+        finalNormal = finalNormal + weight.x * mul((float3x3)boneMatrices[index.x], IN.normal.xyz).xyz;
+
+        // shift over the index/weight variables, this moves the index and 
+        // weight for the current bone into the .x component of the index 
+        // and weight variables
+        index  = index.yzwx;
+        weight = weight.yzwx;
+    }
+
+	OUT.position = mul( modelViewProjection, position );
+//*/
+
+/*
+    // If you don't have a shader profile available to you that supports for()
+    // loops, you'll just have to manually unwind your bone's for() loop and 
+    // use if() conditionals to operate on a fixed number of bones. Of course,
+    // if() conditionals can kill performance, so you may need to create several
+    // different shaders which are hard-coded to handle a certain number of 
+    // bones.
+
+	float4 index  = IN.matrixIndices;
+	float4 weight = IN.weights;
+
+	float4 position = float4( 0.0, 0.0, 0.0, 0.0 );
+	float3 finalNormal   = float3( 0.0, 0.0, 0.0 );
+
+	if( IN.numBones.x == 1 )
+	{
+		// Apply influence of Bone 0
+		position = position + weight.x * float4( mul(boneMatrices[index.x], IN.position).xyz, 1.0f );
+		finalNormal = finalNormal + weight.x * mul((float3x3)boneMatrices[index.x], IN.normal.xyz).xyz;
+	}
+	else if( IN.numBones.x == 2 )
+	{
+		// Apply influence of Bone 0
+		position = position + weight.x * float4( mul(boneMatrices[index.x], IN.position).xyz, 1.0f );
+		finalNormal = finalNormal + weight.x * mul((float3x3)boneMatrices[index.x], IN.normal.xyz).xyz;
+
+		// Apply influence of Bone 1
+		position = position + weight.y * float4( mul(boneMatrices[index.y], IN.position).xyz, 1.0f );
+		finalNormal = finalNormal + weight.y * mul((float3x3)boneMatrices[index.y], IN.normal.xyz).xyz;
+	}
+
+	OUT.position = mul( modelViewProjection, position );
+//*/
+
+	//
+	// Directional light and infinite viewer shading model
+	//
+
+	finalNormal = normalize( mul( (float3x3)modelViewInverse, finalNormal.xyz ) );
+
+	float3 lightDir = normalize( lightVector.xyz );
+
+	float3 half = normalize( eyePosition.xyz - lightDir );
+
+	float specularPower = 0.0f;
+	float4 coeffs = lit(dot(finalNormal, - lightDir), dot(finalNormal,half), specularPower );
+
+	float4 AmbLight  = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float4 DiffLight = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float4 SpecLight = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	float4 AmbMat  = { 0.2f, 0.2f, 0.2f, 1.0f };
+	float4 DiffMat = IN.color0; // Use the vertex's color for the diffuse material.
+	float4 SpecMat = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float4 EmisMat = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	// Compute the standard shading model
+	float4 outCol = AmbLight  * AmbMat +              //ambient term
+		            DiffLight * DiffMat * coeffs.y +  //diffuse term
+		            SpecLight * SpecMat * coeffs.z;   //specular term
+
+	// Add the emmisive material last...
+	OUT.color0 = outCol + EmisMat;
+
+	return OUT;
+}
+
+
+
+

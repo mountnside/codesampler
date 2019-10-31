@@ -1,0 +1,26 @@
+str_a = "x";
+str_b = "x";
+
+if( str_a == str_b )
+{
+   print "success";
+}
+else
+{
+	print "error";
+}
+
+//-------------------------------------------------------------------------------------
+
+str_a = "x";
+str_b = "y";
+
+if( str_a == str_b )
+{
+	print "error";
+}
+else
+{
+	print "success";
+}
+

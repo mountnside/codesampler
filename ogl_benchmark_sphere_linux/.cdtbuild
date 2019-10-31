@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?fileVersion 3.1.0?>
+
+<ManagedProjectBuildInfo>
+<project id="ogl_benchmark_sphere.cdt.managedbuild.target.gnu.exe.1816943965" name="Executable (Gnu)" projectType="cdt.managedbuild.target.gnu.exe">
+<configuration id="cdt.managedbuild.config.gnu.exe.release.1230974711" name="Release" description="" parent="cdt.managedbuild.config.gnu.exe.release" artifactName="ogl_benchmark_sphere" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser" cleanCommand="rm -rf">
+<toolChain superClass="cdt.managedbuild.toolchain.gnu.exe.release" id="cdt.managedbuild.toolchain.gnu.exe.release.1427498217" name="GCC Tool Chain">
+<tool superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release" id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1733908815" name="GCC C++ Compiler" outputs="o" command="g++" outputFlag="-o" outputPrefix=""/>
+<tool superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.release" id="cdt.managedbuild.tool.gnu.c.compiler.exe.release.615237146" name="GCC C Compiler" outputs="o" command="gcc" outputFlag="-o" outputPrefix=""/>
+<tool superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release" id="cdt.managedbuild.tool.gnu.c.linker.exe.release.1451122371" name="GCC C Linker"/>
+<tool superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.release" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.158076400" name="GCC C++ Linker" outputs="" command="g++" outputFlag="-o" outputPrefix="">
+<option superClass="gnu.cpp.link.option.libs" id="gnu.cpp.link.option.libs.1668785092" valueType="libs">
+<listOptionValue value="GL" builtIn="false"/>
+<listOptionValue value="GLU" builtIn="false"/>
+</option>
+</tool>
+<tool superClass="cdt.managedbuild.tool.gnu.assembler.exe.release" id="cdt.managedbuild.tool.gnu.assembler.exe.release.1274858815" name="GCC Assembler"/>
+</toolChain>
+</configuration>
+<configuration id="cdt.managedbuild.config.gnu.exe.debug.1204088935" name="Debug" description="" parent="cdt.managedbuild.config.gnu.exe.debug" artifactName="ogl_benchmark_sphere" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GASErrorParser" cleanCommand="rm -rf">
+<toolChain superClass="cdt.managedbuild.toolchain.gnu.exe.debug" id="cdt.managedbuild.toolchain.gnu.exe.debug.865797027" name="GCC Tool Chain">
+<tool superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug" id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.559846199" name="GCC C++ Compiler" outputs="o" command="g++" outputFlag="-o" outputPrefix=""/>
+<tool superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug" id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.299826781" name="GCC C Compiler" outputs="o" command="gcc" outputFlag="-o" outputPrefix=""/>
+<tool superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug" id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.621303417" name="GCC C Linker"/>
+<tool superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.203634685" name="GCC C++ Linker" outputs="" command="g++" outputFlag="-o" outputPrefix="">
+<option superClass="gnu.cpp.link.option.libs" id="gnu.cpp.link.option.libs.1050715700" valueType="libs">
+<listOptionValue value="GL" builtIn="false"/>
+<listOptionValue value="GLU" builtIn="false"/>
+</option>
+</tool>
+<tool superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug" id="cdt.managedbuild.tool.gnu.assembler.exe.debug.70628424" name="GCC Assembler"/>
+</toolChain>
+</configuration>
+</project>
+</ManagedProjectBuildInfo>

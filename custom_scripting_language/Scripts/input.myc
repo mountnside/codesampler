@@ -1,0 +1,14 @@
+print "Type something!";
+
+input line;
+
+if( line == "" )
+{
+	print "You didn't type anything! ";
+}
+else
+{
+	msg = "You typed: " + line;
+	print msg;
+}
+

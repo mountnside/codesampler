@@ -1,0 +1,17 @@
+!!ARBfp1.0
+
+# Fragment inputs
+ATTRIB inTexCoord = fragment.texcoord;      # First set of texture coordinates
+ATTRIB inColor    = fragment.color.primary; # Diffuse interpolated color
+
+# Fragment outputs
+OUTPUT outColor   = result.color;
+
+TEMP texelColor;
+TXP texelColor, inTexCoord, texture, 2D; 
+
+MUL outColor, texelColor, inColor;  # Modulate texel color with vertex color   
+#ADD outColor, texelColor, inColor;  # Add texel color to vertex color
+
+END
+

@@ -1,0 +1,22 @@
+varying float specular, diffuse;
+uniform float exponent;
+uniform vec3 eye_position, light_position;
+
+void main()
+{
+   vec3 Nn = normalize(gl_NormalMatrix * gl_Normal);
+   vec3 Pw = vec3(gl_ModelViewMatrix * gl_Vertex);
+
+   vec3 Ln = normalize(light_position - Pw);
+   vec3 Vn = normalize(eye_position   - Pw);
+   vec3 Hn = normalize(Ln + Vn);
+
+   float ldn = dot(Ln, Nn);
+   float hdn = dot(Hn, Nn);
+   float vdn = dot(Vn, Nn);
+
+   diffuse  = max(ldn, 0.0);
+   specular = pow(max(hdn, 0.0), exponent);
+   
+   gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+}

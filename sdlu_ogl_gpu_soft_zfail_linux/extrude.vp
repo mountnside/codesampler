@@ -1,0 +1,23 @@
+uniform vec3 uLightPos;
+
+#define EXTRUSION_FACTOR 100.0
+
+void main()
+{
+	vec4 Position = gl_Vertex;
+	vec3 LightDir = normalize(uLightPos - Position.xyz);
+  	float DiffuseLight = max(dot(gl_Normal, LightDir), 0.0);
+
+	//Check if the vertex is facing the light.
+	if(DiffuseLight <= 0.0)
+	{
+		//Extrude!
+		Position = Position + (Position - vec4(uLightPos, 1.0)) * EXTRUSION_FACTOR;
+
+		//Place the extruded vector at infinity.
+      	Position.w = 0.0;
+	}
+
+	//Transform position to clip space.
+	gl_Position = gl_ModelViewProjectionMatrix * Position;
+}

@@ -1,0 +1,65 @@
+
+void main(	in	float4		position	: POSITION,
+			in	float2		texCoord	: TEXCOORD0,
+			in	float3		N			: NORMAL,		// obj space
+				   
+		uniform float4x4	ModelViewProj,
+		uniform float4x4	ModelView,
+		uniform	float4x4	ModelViewI,
+		uniform float4x4	ModelViewIT,
+		uniform float3		eyePosition,
+					
+			out	float4		oPosition	: POSITION,
+			out	float2		oTexCoord	: TEXCOORD0,
+			out	float3		oOsR		: TEXCOORD1		// obj space 
+														// reflection vector
+		) 
+{
+    // As usual, transform vertex position to clip space.
+	oPosition = mul( ModelViewProj, position );
+
+	// Pass thru tex coordinates.
+	oTexCoord = texCoord;
+	
+	// Transform position into world (view) space.
+	float4 wsPosition = mul( ModelView, position );
+
+	// Our model transform is not projective and the homogenous component of 
+	// the vertex position w is 1, so the next step is not necessary, but 
+	// mathematically more correct.
+	wsPosition /= wsPosition.w;
+	
+	// We have an affine model transformation and an uniform scaling 
+	// (actually there is no scaling at all).
+	// So, transforming N into world space can also be done by multiplying
+	// with the modelview matrix, since the modelview matrix is orthogonal 
+	// and following equation applies:
+	// MV = ((MV)^-1)^T
+	float3 wsN = mul( ( float3x3 )ModelViewIT, N );
+
+	// Normalize wsN since input for reflect should be normalized.
+	wsN = normalize( wsN );
+	
+	// Calculate incident ray I within world (view) space.
+	float3 wsI = wsPosition.xyz - eyePosition;
+
+	// Calculate reflected ray R via Cg intrinsic reflect within world 
+	// (view) space. This is why our sample is called per-vertex reflective
+	// environment mapping: The reflected ray is calculated on a per-vertex 
+	// basis.
+	// For the most cases the accuration achieved by calculating the reflected 
+	// ray per-vertex is sufficient and the viewer is not able to notice any
+	// artifacts of the reflected image near the silhouette (there R is changing
+	// along the triangles more frequently).
+	// You can achieve a more accurate result by calculating the reflected ray 
+	// per-pixel. This, however, will have a significant impact on performance
+	// (at least on older hardware).
+	float3 wsR = reflect( wsI, wsN );
+
+	// The reflected vector is incorrect so far. By multiplying R with the 
+	// inverse of the modelview matrix, we get the correct object space 
+	// coordinates of R. This is necessary because we do not use dynamic cube
+	// mapping and rotating the skybox changes the object space coordinates of the
+	// skybox (which is tracked by the modelview matrix).
+	oOsR = mul( ( float3x3 )ModelViewI, wsR );
+}

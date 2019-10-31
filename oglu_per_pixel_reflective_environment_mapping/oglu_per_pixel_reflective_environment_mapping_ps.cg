@@ -1,0 +1,39 @@
+
+void main(	in		float4		position		: POSITION,
+			in		float2		texCoord		: TEXCOORD0,
+			in		float3		wsN				: TEXCOORD1,
+			in		float3		wsI				: TEXCOORD2,
+
+            out		float4		oColor			: COLOR,   
+			
+            uniform	samplerCUBE environmentMap,
+			uniform	float4x4	ModelViewI
+		) 
+{
+	// Normalize wsN since linear interpolation causes vectors to be unnormalized.
+	wsN = normalize( wsN );
+	wsI = normalize( wsI );
+
+	// Calculate reflected ray R via Cg intrinsic reflect within world 
+	// (view) space. This is why our sample is called per-pixel reflective
+	// environment mapping: The reflected ray is calculated on a per-pixel
+	// basis.
+	// For the most cases, the accuration achieved by calculating the reflected
+	// ray per-vertex is sufficient and the viewer is not able to notice any
+	// artifacts of the reflected image near the silhouette (there R is changing
+	// along the triangles more frequently).
+	// You can achieve a more accurate result by calculating the reflected ray
+	// per-pixel. This, however, will have a significant impact on performance
+	// (at least on older hardware).
+	float3 wsR = reflect( wsI, wsN );
+
+	// The reflected vector is incorrect so far. By multiplying R with the 
+	// inverse of the modelview matrix, we get the correct object space 
+	// coordinates of R. This is necessary because we do not use dynamic cube
+	// mapping and rotating the skybox changes the object space coordinates of the
+	// skybox (which is tracked by the modelview matrix).
+	float3 osR = mul( ( float3x3 )ModelViewI, wsR );
+
+	// Use Cg intrinsic texCUBE to fetch environment color.
+	oColor = texCUBE( environmentMap, osR ); 
+}

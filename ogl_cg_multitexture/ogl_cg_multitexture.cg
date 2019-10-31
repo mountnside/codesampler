@@ -1,0 +1,37 @@
+struct fragment
+{
+	float4 position  : POSITION;
+	float4 color0    : COLOR0;
+	float2 texcoord0 : TEXCOORD0;
+};
+
+struct pixel
+{
+	float4 color : COLOR;
+};
+
+//-----------------------------------------------------------------------------
+// IN             - incoming fragment to be processed
+// testTexture    - a texture for the pixel shader to use
+// checkerTexture - a second texture for the pixel shader to use
+//-----------------------------------------------------------------------------
+pixel main( fragment IN,
+
+// Do this if you're going to use OpenGL's method of passing the multi-texture ID.
+            //uniform sampler2D testTexture    : TEXUNIT0,
+            //uniform sampler2D checkerTexture : TEXUNIT1 )
+
+// Do this if you're going to use Cg's method of passing the multi-texture ID.
+            uniform sampler2D testTexture,
+            uniform sampler2D checkerTexture )
+{
+	pixel OUT;
+
+    float4 texelColor0 = tex2D( testTexture, IN.texcoord0 );
+    float4 texelColor1 = tex2D( checkerTexture, IN.texcoord0 );
+
+    OUT.color  = texelColor0 * IN.color0;
+    OUT.color += texelColor1;
+
+	return OUT;
+}

@@ -1,0 +1,59 @@
+struct vertex
+{
+	float4 position : POSITION;
+	float4 color0   : COLOR0;
+};
+
+struct fragment
+{
+	float4 position : POSITION;
+	float4 color0   : COLOR0;
+};
+
+// This binding semantic requires CG_PROFILE_ARBVP1 or higher.
+uniform float4x4 modelViewProj : state.matrix.mvp;
+
+//-----------------------------------------------------------------------------
+// IN         - incoming per-vertex data to be processed
+// constColor - constant color
+//-----------------------------------------------------------------------------
+fragment main( vertex IN, uniform float4 constColor )
+
+{
+	fragment OUT;
+
+    OUT.position = mul( modelViewProj, IN.position );
+
+	OUT.color0 = IN.color0; // Use the original per-vertex color specified
+    //OUT.color0 = constColor; // Uncomment this to use the color stored in the constColor argument
+
+	return OUT;
+}
+
+
+/*
+//
+// Here's another way of declaring the same vertex shader...
+//
+
+//-----------------------------------------------------------------------------
+// position      - incoming position
+// color         - incoming color
+// positionO     - outgoing position
+// colorO        - outgoing color
+// worldViewProj - combined world-view-projection matrix
+// constColor    - constant color
+//-----------------------------------------------------------------------------
+void main( in float4 position   : POSITION,
+           in float4 color      : COLOR0,
+           out float4 positionO : POSITION,
+           out float4 colorO    : COLOR0,
+           const uniform float4 constColor )
+{
+	positionO = mul( modelViewProj, position );
+
+	colorO    = color;      // Use the original per-vertex color specified
+	//colorO    = constColor; // Uncomment this to use the color stored in the constColor argument
+}
+
+//*/
